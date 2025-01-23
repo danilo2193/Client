@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+	<style>
+		.buttons {
+			display: flex;
+			flex: 1 1 0;
+			justify-content: space-around;
+			background-color: aqua;
+		}
+
+		.response {
+			display: flex;
+			flex: 1 1 0;
+			justify-content: space-around;
+			background-color: burlywood;
+		}
+
+		button {
+			margin: 5px 5px;
+			padding: 5px 10px;
+		}
+
+		.work {
+			display: flex;
+			flex-direction: column;
+		}
+	</style>
+</head>
+
+<body>
+
+	<div class="buttons">
+		<button onclick="functionPing()">click ping</button>
+		<button onclick="functionWork()">click work</button>
+		<button onclick="functionMessage()">click message</button>
+	</div>
+
+	<div class="response">
+		<p id="responsePing"></p>
+		<div class="work">
+			<p id="responseWork"></p>
+			<p id="responseWorkDelay"></p>
+		</div>
+		<p id="responseMessage"></p>
+	</div>
+	
+	<script>
+
+		function functionMessage() {
+			socket = new WebSocket("wss://localhost:7001/messages");
+
+			socket.onmessage = function (e) {
+				const bla = document.getElementById("responseMessage");
+				bla.innerHTML = `${event.data}`;
+			}
+		}
+
+		function functionPing() {
+			const url = "https://localhost:7001/server/ping";
+			fetch(url, {
+				method: "POST",
+				headers: {
+					"Content-Length": 0,
+					"Accept": "*/*",
+					"Accept-Encoding": ["gzip", "deflate", "br"],
+					"Connection": "keep-alive",
+				}
+			})
+				.then(r => {
+					if (!r.ok) {
+						throw new Error("Problems")
+					}
+					return r.text();
+				})
+				.then(data => {
+					document.getElementById("responsePing").innerHTML = data;
+				});
+
+			console.log("making api call");
+		}
+
+		function functionWork() {
+			const url = "https://localhost:7001/work/start";
+			fetch(url, {
+				method: "POST",
+				headers: {
+					"Content-Length": 0,
+					"Accept": "*/*",
+					"Accept-Encoding": ["gzip", "deflate", "br"],
+					"Connection": "keep-alive",
+				}
+			})
+				.then(r => {
+					if (!r.ok) {
+						throw new Error("Problems")
+					}
+					return r.text();
+				})
+				.then(async (data) => {
+					document.getElementById("responseWork").innerHTML = data;
+					setTimeout(() => {
+						document.getElementById("responseWorkDelay").innerHTML = "Work Completed" + " " + data.substring(12, 48)
+					}, 1000);
+				});
+
+			console.log("making api call");
+		}
+
+	</script>
+</body>
+
+</html>
