@@ -32,9 +32,9 @@
 <body>
 
 	<div class="buttons">
-		<button onclick="functionPing()">click ping</button>
-		<button onclick="functionWork()">click work</button> 
-		<button onclick="functionMessage()">click message</button>
+		<button onclick="functionPing()">Click ping</button>
+		<button onclick="functionWork()">Click work</button> 
+		<button onclick="functionMessage()">Click message</button>
 	</div>
 
 	<div class="response">
@@ -77,8 +77,6 @@
 				.then(data => {
 					document.getElementById("responsePing").innerHTML = data;
 				});
-
-			console.log("making api call");
 		}
 
 		function functionWork() {
@@ -104,8 +102,6 @@
 						document.getElementById("responseWorkDelay").innerHTML = "Work Completed" + " " + data.substring(12, 48)
 					}, 1000);
 				});
-
-			console.log("making api call");
 		}
 
 	</script>
